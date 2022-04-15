@@ -199,11 +199,11 @@ namespace Windows_Forms_Chat
                 }
                 else if (isWho == true)
                 {
-                    foreach (Object obj in clientSockets)
+                    SendToAll("Who is active on the server: \n", currentClientSocket);
+                    foreach (ClientSocket clientSocket in clientSockets)
                     {
-                        SendToAll(, currentClientSocket);
-                        KeepSubscriptionOpen();
-                    }
+                        SendToAll("- " + clientSocket.username, currentClientSocket);
+                    };
 
                 }
                 else if (isAbout == true)
