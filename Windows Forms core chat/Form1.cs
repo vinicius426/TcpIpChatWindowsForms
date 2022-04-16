@@ -80,6 +80,8 @@ namespace Windows_Forms_Chat
                     UsernameTextBox.Enabled = true;
                     HostButton.Enabled = false;
                     JoinButton.Enabled = false;
+                    whisperTextBox.Enabled = true;
+                    whisperButton.Enabled = true;
 
                 }
                 catch (Exception ex)
@@ -95,7 +97,7 @@ namespace Windows_Forms_Chat
         private void SendButton_Click(object sender, EventArgs e)
         {
             if (client != null)
-                client.SendString(username + ": " + TypeTextBox.Text);
+                client.SendString(TypeTextBox.Text);
             else if (server != null)
                 server.SendToAll(TypeTextBox.Text, null);
 
@@ -214,6 +216,16 @@ namespace Windows_Forms_Chat
                 client.SendString("!set_username " + username + " " + setUsername);
                 username = setUsername;
 
+            }
+        }
+
+        private void whisperButton_Click(object sender, EventArgs e)
+        {
+            if(whisperTextBox != null)
+            {
+                TypeTextBox.Clear();
+                TypeTextBox.Text = "!whisper " + whisperTextBox.Text + ": ";
+                whisperTextBox.Clear();
             }
         }
     }

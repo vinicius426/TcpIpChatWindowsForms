@@ -55,6 +55,9 @@
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.UsernameConfirmButton = new System.Windows.Forms.Button();
             this.GreetingsLabel = new System.Windows.Forms.Label();
+            this.sendWhisperLabel = new System.Windows.Forms.Label();
+            this.whisperTextBox = new System.Windows.Forms.TextBox();
+            this.whisperButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -338,11 +341,42 @@
             this.GreetingsLabel.Size = new System.Drawing.Size(0, 15);
             this.GreetingsLabel.TabIndex = 18;
             // 
+            // sendWhisperLabel
+            // 
+            this.sendWhisperLabel.AutoSize = true;
+            this.sendWhisperLabel.Location = new System.Drawing.Point(220, 117);
+            this.sendWhisperLabel.Name = "sendWhisperLabel";
+            this.sendWhisperLabel.Size = new System.Drawing.Size(50, 15);
+            this.sendWhisperLabel.TabIndex = 19;
+            this.sendWhisperLabel.Text = "Whisper";
+            // 
+            // whisperTextBox
+            // 
+            this.whisperTextBox.Enabled = false;
+            this.whisperTextBox.Location = new System.Drawing.Point(220, 135);
+            this.whisperTextBox.Name = "whisperTextBox";
+            this.whisperTextBox.Size = new System.Drawing.Size(110, 23);
+            this.whisperTextBox.TabIndex = 20;
+            // 
+            // whisperButton
+            // 
+            this.whisperButton.Enabled = false;
+            this.whisperButton.Location = new System.Drawing.Point(220, 170);
+            this.whisperButton.Name = "whisperButton";
+            this.whisperButton.Size = new System.Drawing.Size(75, 23);
+            this.whisperButton.TabIndex = 21;
+            this.whisperButton.Text = "Select";
+            this.whisperButton.UseVisualStyleBackColor = true;
+            this.whisperButton.Click += new System.EventHandler(this.whisperButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(897, 420);
+            this.Controls.Add(this.whisperButton);
+            this.Controls.Add(this.whisperTextBox);
+            this.Controls.Add(this.sendWhisperLabel);
             this.Controls.Add(this.GreetingsLabel);
             this.Controls.Add(this.UsernameConfirmButton);
             this.Controls.Add(this.UsernameTextBox);
@@ -408,6 +442,9 @@
         private System.Windows.Forms.TextBox UsernameTextBox;
         public System.Windows.Forms.Button UsernameConfirmButton;
         private System.Windows.Forms.Label GreetingsLabel;
+        private System.Windows.Forms.Label sendWhisperLabel;
+        private System.Windows.Forms.TextBox whisperTextBox;
+        private System.Windows.Forms.Button whisperButton;
     }
 }
 

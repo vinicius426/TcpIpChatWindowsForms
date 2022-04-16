@@ -5,14 +5,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 //https://github.com/AbleOpus/NetworkingSamples/blob/master/MultiServer/Program.cs
 namespace Windows_Forms_Chat
 {
     public class TCPChatServer : TCPChatBase
     {
-        string[] userArray = { };
-
         public Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         //connected clients
         public List<ClientSocket> clientSockets = new List<ClientSocket>();
@@ -138,7 +137,7 @@ namespace Windows_Forms_Chat
                 {
                     string newUsername = trimmedText;
                     currentClientSocket.username = newUsername;
-                    SendToAll("Username " + newUsername + " has joined the server", currentClientSocket);
+                    SendToAll("joined the server!", currentClientSocket);
                     KeepSubscriptionOpen();
                 }
             }
@@ -196,7 +195,7 @@ namespace Windows_Forms_Chat
                     SendToAll("Who is active on the server: \n", currentClientSocket);
                     foreach (ClientSocket clientSocket in clientSockets)
                     {
-                        SendToAll("- " + clientSocket.username, currentClientSocket);
+                        SendToAll(clientSocket.username, currentClientSocket);
                     };
 
                 }
@@ -204,6 +203,15 @@ namespace Windows_Forms_Chat
                 {
                     SendToAll("This project was created by Vinicius on April/222", currentClientSocket);
                     KeepSubscriptionOpen();
+                }
+                else if (isWhisper == true)
+                {
+                    string trimmedText = text[(text.Split()[0].Length + 1)..];
+                    string clearText = trimmedText[(trimmedText.Split()[0].Length + 1)..];
+                    string getSendTo = Regex.Replace(trimmedText.Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+                    SendWhisper(clearText, currentClientSocket, getSendTo);
+                    AddToChat(currentClientSocket.username + " whispers " + getSendTo);
+                     
                 }
                 else
                 {
@@ -221,9 +229,19 @@ namespace Windows_Forms_Chat
             {
                 if(from == null || !from.socket.Equals(c))
                 {
-                    byte[] data = Encoding.ASCII.GetBytes(str);
+                    byte[] data = Encoding.ASCII.GetBytes(from.username + ": " +  str);
                     c.socket.Send(data);
                 }
+            }
+        }
+
+        public void SendWhisper(string str, ClientSocket from, string to)
+        {
+            if(from == null || !from.socket.Equals(to))
+            {
+                var match = clientSockets.Find(e => e.username == to);
+                byte[] data = Encoding.ASCII.GetBytes(from.username + " whispers to " + to + " " + str);
+                match.socket.Send(data);
             }
         }
 
