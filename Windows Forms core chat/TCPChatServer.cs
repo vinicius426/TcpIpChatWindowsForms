@@ -237,14 +237,19 @@ namespace Windows_Forms_Chat
 
         public void SendWhisper(string str, ClientSocket from, string to)
         {
-            if(from == null || !from.socket.Equals(to))
+            var match = clientSockets.Find(e => e.username == to);
+            if (from == null || !from.socket.Equals(to))
             {
-                var match = clientSockets.Find(e => e.username == to);
-                byte[] data = Encoding.ASCII.GetBytes(from.username + " whispers to " + to + " " + str);
-                match.socket.Send(data);
+                byte[] dataTo = Encoding.ASCII.GetBytes(from.username + " whispers You: " + str);
+                match.socket.Send(dataTo);
+                byte[] dataFrom = Encoding.ASCII.GetBytes(" You whisper " + match.username +": " + str);
+                from.socket.Send(dataFrom);
+            }
+            else
+            {
+                byte[] dataNotFound = Encoding.ASCII.GetBytes("Username " + to + " not connected to the server.");
+                from.socket.Send(dataNotFound);
             }
         }
-
-        
     }
 }
