@@ -159,7 +159,7 @@ namespace Windows_Forms_Chat
                 bool verifyNewUserExists = clientSockets.Any(item => item.username == newSetUsername);
                 if (verifyNewUserExists == true)
                 {
-                    SendToAll("Username " + newSetUsername + " is not available. Client will be disconnected", currentClientSocket);
+                    SendToAll("Username " + newSetUsername + " is not available. " + currentClientSocket.username + " will be disconnected", currentClientSocket);
                     currentClientSocket.socket.Shutdown(SocketShutdown.Both);
                     currentClientSocket.socket.Close();
                     clientSockets.Remove(currentClientSocket);
@@ -238,17 +238,25 @@ namespace Windows_Forms_Chat
         public void SendWhisper(string str, ClientSocket from, string to)
         {
             var match = clientSockets.Find(e => e.username == to);
-            if (from == null || !from.socket.Equals(to))
+
+
+            if (match?.socket != null && from.username != to)
             {
                 byte[] dataTo = Encoding.ASCII.GetBytes(from.username + " whispers You: " + str);
                 match.socket.Send(dataTo);
-                byte[] dataFrom = Encoding.ASCII.GetBytes(" You whisper " + match.username +": " + str);
+                byte[] dataFrom = Encoding.ASCII.GetBytes(" You whisper " + match.username + ": " + str);
+                from.socket.Send(dataFrom);
+            }
+            else if (from.username == to)
+            {
+                byte[] dataFrom = Encoding.ASCII.GetBytes("Are you trying to whisper yourself?...Weird...");
                 from.socket.Send(dataFrom);
             }
             else
-            {
+            { 
                 byte[] dataNotFound = Encoding.ASCII.GetBytes("Username " + to + " not connected to the server.");
                 from.socket.Send(dataNotFound);
+                
             }
         }
     }
