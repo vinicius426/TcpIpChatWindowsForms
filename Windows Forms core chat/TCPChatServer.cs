@@ -120,16 +120,13 @@ namespace Windows_Forms_Chat
                 currentClientSocket.socket.BeginReceive(currentClientSocket.buffer, 0, ClientSocket.BUFFER_SIZE, SocketFlags.None, ReceiveCallback, currentClientSocket);
             }
 
-            List<string> list = new List<string>(userArray.ToList());
-
-
             if (isUsername == true)
             {
-                //remove !new_username from string
+                //remove !new_username from string and check if username exists in List of clientSockets
                 string trimmedText = text[(text.Split()[0].Length + 1)..];
-                var userExist = Array.Exists(userArray, x => x == trimmedText);
+                bool userExists = clientSockets.Any(item => item.username == trimmedText);
                 
-                if (userExist == true)
+                if (userExists == true)
                 {
                     SendToAll("Username " + trimmedText + " is in use. Client will be disconnected", currentClientSocket);
                     currentClientSocket.socket.Shutdown(SocketShutdown.Both);
@@ -140,10 +137,8 @@ namespace Windows_Forms_Chat
                 else
                 {
                     string newUsername = trimmedText;
-                    list.Add(newUsername);
-                    userArray = list.ToArray();
                     currentClientSocket.username = newUsername;
-                    SendToAll("Username " + newUsername + " has joined the room", currentClientSocket);
+                    SendToAll("Username " + newUsername + " has joined the server", currentClientSocket);
                     KeepSubscriptionOpen();
                 }
             }
@@ -158,27 +153,26 @@ namespace Windows_Forms_Chat
                 if (trimmedText.Contains(" "))
                 {
                     oldUsername = trimmedText.Substring(0, trimmedText.LastIndexOf(' ')).TrimEnd();
-                }
+                };
 
-                userArray = userArray.Where(val => val != oldUsername).ToArray();
-
-                //remove old username from string to be able to add to new username to array
+                //remove old username from string to be able to change to new username
                 string newSetUsername = trimmedText[(trimmedText.Split()[0].Length + 1)..];
-                var verifyUserExist = Array.Exists(userArray, x => x == newSetUsername);
-                if(verifyUserExist == true)
+                bool verifyNewUserExists = clientSockets.Any(item => item.username == newSetUsername);
+                if (verifyNewUserExists == true)
                 {
                     SendToAll("Username " + newSetUsername + " is not available. Client will be disconnected", currentClientSocket);
                     currentClientSocket.socket.Shutdown(SocketShutdown.Both);
                     currentClientSocket.socket.Close();
                     clientSockets.Remove(currentClientSocket);
-                    AddToChat("Client disconnected");
+                    AddToChat(currentClientSocket.username + " disconnected");
                     return;
                 }
-                list.Add(newSetUsername);
-                userArray = list.ToArray() ;
-                currentClientSocket.username = newSetUsername;
-                SendToAll(oldUsername + " has changed username to "+ newSetUsername, currentClientSocket);
-                KeepSubscriptionOpen();
+                else
+                {
+                    currentClientSocket.username = newSetUsername;
+                    SendToAll(oldUsername + " has changed username to " + newSetUsername, currentClientSocket);
+                    KeepSubscriptionOpen();
+                }
             }
             else
             {
