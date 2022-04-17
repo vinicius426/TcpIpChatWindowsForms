@@ -57,7 +57,10 @@
             this.GreetingsLabel = new System.Windows.Forms.Label();
             this.sendWhisperLabel = new System.Windows.Forms.Label();
             this.whisperTextBox = new System.Windows.Forms.TextBox();
-            this.whisperButton = new System.Windows.Forms.Button();
+            this.WhisperButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.SetModeratorTextBox = new System.Windows.Forms.TextBox();
+            this.SetModeratorButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -116,7 +119,7 @@
             // 
             // ChatTextBox
             // 
-            this.ChatTextBox.Location = new System.Drawing.Point(12, 217);
+            this.ChatTextBox.Location = new System.Drawing.Point(12, 333);
             this.ChatTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChatTextBox.Multiline = true;
             this.ChatTextBox.Name = "ChatTextBox";
@@ -127,8 +130,7 @@
             // 
             // TypeTextBox
             // 
-            this.TypeTextBox.Enabled = false;
-            this.TypeTextBox.Location = new System.Drawing.Point(54, 384);
+            this.TypeTextBox.Location = new System.Drawing.Point(54, 500);
             this.TypeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TypeTextBox.Name = "TypeTextBox";
             this.TypeTextBox.Size = new System.Drawing.Size(392, 23);
@@ -137,7 +139,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 384);
+            this.label4.Location = new System.Drawing.Point(12, 500);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 15);
             this.label4.TabIndex = 8;
@@ -167,8 +169,7 @@
             // 
             // SendButton
             // 
-            this.SendButton.Enabled = false;
-            this.SendButton.Location = new System.Drawing.Point(460, 384);
+            this.SendButton.Location = new System.Drawing.Point(460, 500);
             this.SendButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SendButton.Name = "SendButton";
             this.SendButton.Size = new System.Drawing.Size(82, 22);
@@ -344,7 +345,7 @@
             // sendWhisperLabel
             // 
             this.sendWhisperLabel.AutoSize = true;
-            this.sendWhisperLabel.Location = new System.Drawing.Point(220, 117);
+            this.sendWhisperLabel.Location = new System.Drawing.Point(11, 230);
             this.sendWhisperLabel.Name = "sendWhisperLabel";
             this.sendWhisperLabel.Size = new System.Drawing.Size(50, 15);
             this.sendWhisperLabel.TabIndex = 19;
@@ -353,28 +354,59 @@
             // whisperTextBox
             // 
             this.whisperTextBox.Enabled = false;
-            this.whisperTextBox.Location = new System.Drawing.Point(220, 135);
+            this.whisperTextBox.Location = new System.Drawing.Point(11, 248);
             this.whisperTextBox.Name = "whisperTextBox";
             this.whisperTextBox.Size = new System.Drawing.Size(110, 23);
             this.whisperTextBox.TabIndex = 20;
             // 
-            // whisperButton
+            // WhisperButton
             // 
-            this.whisperButton.Enabled = false;
-            this.whisperButton.Location = new System.Drawing.Point(220, 170);
-            this.whisperButton.Name = "whisperButton";
-            this.whisperButton.Size = new System.Drawing.Size(75, 23);
-            this.whisperButton.TabIndex = 21;
-            this.whisperButton.Text = "Select";
-            this.whisperButton.UseVisualStyleBackColor = true;
-            this.whisperButton.Click += new System.EventHandler(this.whisperButton_Click);
+            this.WhisperButton.Enabled = false;
+            this.WhisperButton.Location = new System.Drawing.Point(11, 283);
+            this.WhisperButton.Name = "WhisperButton";
+            this.WhisperButton.Size = new System.Drawing.Size(75, 23);
+            this.WhisperButton.TabIndex = 21;
+            this.WhisperButton.Text = "Select";
+            this.WhisperButton.UseVisualStyleBackColor = true;
+            this.WhisperButton.Click += new System.EventHandler(this.whisperButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(220, 117);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(82, 15);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "Set Moderator";
+            // 
+            // SetModeratorTextBox
+            // 
+            this.SetModeratorTextBox.Enabled = false;
+            this.SetModeratorTextBox.Location = new System.Drawing.Point(220, 135);
+            this.SetModeratorTextBox.Name = "SetModeratorTextBox";
+            this.SetModeratorTextBox.Size = new System.Drawing.Size(138, 23);
+            this.SetModeratorTextBox.TabIndex = 23;
+            // 
+            // SetModeratorButton
+            // 
+            this.SetModeratorButton.Enabled = false;
+            this.SetModeratorButton.Location = new System.Drawing.Point(220, 170);
+            this.SetModeratorButton.Name = "SetModeratorButton";
+            this.SetModeratorButton.Size = new System.Drawing.Size(138, 23);
+            this.SetModeratorButton.TabIndex = 24;
+            this.SetModeratorButton.Text = "Promote/Demote";
+            this.SetModeratorButton.UseVisualStyleBackColor = true;
+            this.SetModeratorButton.Click += new System.EventHandler(this.SetModeratorButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(897, 420);
-            this.Controls.Add(this.whisperButton);
+            this.ClientSize = new System.Drawing.Size(897, 575);
+            this.Controls.Add(this.SetModeratorButton);
+            this.Controls.Add(this.SetModeratorTextBox);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.WhisperButton);
             this.Controls.Add(this.whisperTextBox);
             this.Controls.Add(this.sendWhisperLabel);
             this.Controls.Add(this.GreetingsLabel);
@@ -444,7 +476,10 @@
         private System.Windows.Forms.Label GreetingsLabel;
         private System.Windows.Forms.Label sendWhisperLabel;
         private System.Windows.Forms.TextBox whisperTextBox;
-        private System.Windows.Forms.Button whisperButton;
+        private System.Windows.Forms.Button WhisperButton;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox SetModeratorTextBox;
+        private System.Windows.Forms.Button SetModeratorButton;
     }
 }
 

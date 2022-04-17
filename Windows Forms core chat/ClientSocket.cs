@@ -12,5 +12,7 @@ namespace Windows_Forms_Chat
         public const int BUFFER_SIZE = 2048;
         public byte[] buffer = new byte[BUFFER_SIZE];
         public string username = null;
+        public bool moderator = false;
+        public bool muted = false;
     }
 }

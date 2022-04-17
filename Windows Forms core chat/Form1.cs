@@ -21,7 +21,7 @@ namespace Windows_Forms_Chat
         TCPChatServer server = null;
         TCPChatClient client = null;
         string username = null;
-        string setUsername = null;
+        string newUsername = null;
 
         public Form1()
         {
@@ -52,6 +52,10 @@ namespace Windows_Forms_Chat
                     server.SetupServer();
                     HostButton.Enabled = false;
                     JoinButton.Enabled = false;
+                    TypeTextBox.Enabled = true;
+                    SendButton.Enabled = true;
+                    SetModeratorButton.Enabled = true;
+                    SetModeratorTextBox.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -81,7 +85,7 @@ namespace Windows_Forms_Chat
                     HostButton.Enabled = false;
                     JoinButton.Enabled = false;
                     whisperTextBox.Enabled = true;
-                    whisperButton.Enabled = true;
+                    WhisperButton.Enabled = true;
 
                 }
                 catch (Exception ex)
@@ -96,8 +100,28 @@ namespace Windows_Forms_Chat
 
         private void SendButton_Click(object sender, EventArgs e)
         {
+            bool isUsername = TypeTextBox.Text.ToLower().Contains("!username");
+            bool isNewUsername = TypeTextBox.Text.ToLower().Contains("!new_username");
+
             if (client != null)
+            {
+                if (isUsername == true)
+                {
+                    string trimmedText = TypeTextBox.Text[(TypeTextBox.Text.Split()[0].Length + 1)..];
+                    username = trimmedText;
+                    GreetingsLabel.Text = "Welcome " + username + "!!";
+                }
+                else if(isNewUsername == true)
+                {
+                    string trimmedText = TypeTextBox.Text[(TypeTextBox.Text.Split()[0].Length + 1)..];
+                    newUsername = trimmedText;
+                    TypeTextBox.Clear();
+                    client.SendString("!new_username " + username + " " + newUsername);
+                    username = newUsername;
+                    GreetingsLabel.Text = "Welcome " + username + "!!";
+                }
                 client.SendString(TypeTextBox.Text);
+            }
             else if (server != null)
                 server.SendToAll(TypeTextBox.Text, null);
 
@@ -202,20 +226,20 @@ namespace Windows_Forms_Chat
             if(UsernameTextBox != null && username == null)
             {
                 username = UsernameTextBox.Text;
-                GreetingsLabel.Text = "Welcome " + username + "!!";
                 UsernameTextBox.Clear();
-                client.SendString("!new_username " + username);
+                client.SendString("!username " + username);
+                GreetingsLabel.Text = "Welcome " + username + "!!";
                 TypeTextBox.Enabled = true;
                 SendButton.Enabled = true;
+                UsernameLabel.Text = "Change username";
             }
             else if(UsernameTextBox != null && username != null)
             {
-                setUsername = UsernameTextBox.Text;
+                newUsername = UsernameTextBox.Text;
                 GreetingsLabel.Text = "Welcome " + username + "!!";
                 UsernameTextBox.Clear();
-                client.SendString("!set_username " + username + " " + setUsername);
-                username = setUsername;
-
+                client.SendString("!new_username " + username + " " + newUsername);
+                username = newUsername;
             }
         }
 
@@ -227,6 +251,12 @@ namespace Windows_Forms_Chat
                 TypeTextBox.Text = "!whisper " + whisperTextBox.Text + ": ";
                 whisperTextBox.Clear();
             }
+        }
+
+        private void SetModeratorButton_Click(object sender, EventArgs e)
+        {
+            string userTobeSet = SetModeratorTextBox.Text;
+            server.SetModerator(userTobeSet);
         }
     }
 }
