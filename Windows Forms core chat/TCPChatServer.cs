@@ -230,7 +230,7 @@ namespace Windows_Forms_Chat
                 }
                 else if (isAbout == true)
                 {
-                    ServerMessage("This project was created by Vinicius on April/222", currentClientSocket);
+                    ServerMessage("This project was created by Matthew Carr and adapted by Vinicius Silva on April/22", currentClientSocket);
                     AddToChat("About sent to " + currentClientSocket.username);
                     KeepSubscriptionOpen();
                 }
