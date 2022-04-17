@@ -75,8 +75,8 @@ namespace Windows_Forms_Chat
             if (client != null)
             {
                 client.socket.Shutdown(SocketShutdown.Both);
-                client.socket.Close();
                 clientSockets.Remove(client);
+                client.socket.Close(2000);
             }
             AddToChat("Client can't be disconnected");
             return;
@@ -101,8 +101,9 @@ namespace Windows_Forms_Chat
             {
                 AddToChat("Client forcefully disconnected");
                 // Don't shutdown because the socket may be disposed and its disconnected anyway.
-                currentClientSocket.socket.Close();
+                currentClientSocket.socket.Close(2000);
                 clientSockets.Remove(currentClientSocket);
+
                 return;
             }
 
@@ -255,7 +256,7 @@ namespace Windows_Forms_Chat
                     string getKickWho = GetTarget(trimmedText);
                     if (currentClientSocket.moderator == true)
                     {
-                        var matchClient = clientSockets.Find(e => e.username == getKickWho);
+                        var matchClient = clientSockets.Find(client => client.username == getKickWho);
                         string disconnectedClient = matchClient.username;
                         AddToChat(matchClient.username);
                         AddToChat(disconnectedClient + " disconnected");
