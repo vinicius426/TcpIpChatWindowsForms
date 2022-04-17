@@ -29,11 +29,13 @@ namespace Windows_Forms_Chat
                 serverIP.Length > 0 &&
                 chatTextBox != null)
             {
-                tcp = new TCPChatClient();
-                tcp.port = port;
-                tcp.serverPort = serverPort;
-                tcp.serverIP = serverIP;
-                tcp.chatTextBox = chatTextBox;
+                tcp = new TCPChatClient
+                {
+                    port = port,
+                    serverPort = serverPort,
+                    serverIP = serverIP,
+                    chatTextBox = chatTextBox
+                };
                 tcp.clientSocket.socket = tcp.socket;
 
             }
