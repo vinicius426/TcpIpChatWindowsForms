@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 
 //reference: https://github.com/AbleOpus/NetworkingSamples/blob/master/MultiClient/Program.cs
@@ -100,7 +101,68 @@ namespace Windows_Forms_Chat
             Console.WriteLine("Received Text: " + text);
 
             //text is from server but could have been broadcast from the other clients
-            AddToChat( text );
+
+            bool isKick = text.ToLower() == "!kick";
+            bool isUsername = text.ToLower().Contains("!username");
+            bool isKickServer = text.Contains("SERVER: !kick");
+            bool isModServer = text.Contains("SERVER: !mod");
+
+            if(isModServer || isKickServer || isKick || isUsername)
+            {
+                if (isKick == true)
+                {
+                    string trimmedText = RemoveCommand(text);
+                    if (currentClientSocket.moderator == true)
+                    {
+                        Close();
+                        return;
+                    }
+                }
+                else if (isKickServer)
+                {
+                    if (GetTarget(text) == clientSocket.username)
+                    {
+                        Application.Exit();
+                        return;
+                    }
+                }
+                else if (isUsername)
+                {
+                    string removeCommand = RemoveCommand(text);
+                    clientSocket.username = removeCommand;
+                }
+                else if (isModServer == true)
+                {
+                    if (ValidCommand(text))
+                    {
+                        if (GetTarget(text) == clientSocket.username)
+                        {
+                            if (clientSocket.moderator == true)
+                            {
+                                clientSocket.moderator = false;
+                                SendString("!change_mod");
+                            }
+                            else
+                            {
+                                clientSocket.moderator = true;
+                                SendString("!change_mod");
+                            }
+                        }
+                        else
+                        {
+                            AddToChat("User not found!");
+                        }
+                    }
+                    else
+                    {
+                        ServerMessage("Command invalid, please type !commands to see available commands", currentClientSocket);
+                    }
+                }
+            }
+            else
+            {
+                AddToChat(text);
+            }
             
             //we just received a message from this socket, better keep an ear out with another thread for the next one
             currentClientSocket.socket.BeginReceive(currentClientSocket.buffer, 0, ClientSocket.BUFFER_SIZE, SocketFlags.None, ReceiveCallback, currentClientSocket);
@@ -108,6 +170,47 @@ namespace Windows_Forms_Chat
         public void Close()
         {
             socket.Close();
+        }
+        public string RemoveCommand(string str)
+        {
+            string text = str?[(str.Split()[0].Length + 1)..];
+            return text;
+        }
+
+        private static bool ValidCommand(string text)
+        {
+            string[] newstring = text.Split();
+            if (newstring.Length > 1 && newstring[1] != "")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void ServerMessage(string str, ClientSocket from)
+        {
+            if (from?.socket == null || from?.username == null)
+            {
+                byte[] dataTo = Encoding.ASCII.GetBytes(str);
+                from?.socket.Send(dataTo);
+            }
+            else
+            {
+                byte[] dataTo = Encoding.ASCII.GetBytes(str);
+                from.socket.Send(dataTo);
+            }
+        }
+
+        public string GetTarget(string str)
+        {
+
+            string removeCommand = RemoveCommand(str);
+            string trimmedText = RemoveCommand(removeCommand);
+            string target = Regex.Replace(trimmedText.Split()[0], @"[^0-9a-zA-Z\ ]+", "");
+            return target;
         }
     }
 

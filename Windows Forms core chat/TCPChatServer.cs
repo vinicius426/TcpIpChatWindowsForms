@@ -69,7 +69,7 @@ namespace Windows_Forms_Chat
             clientSockets.Clear();
             serverSocket.Close();
         }
-        
+
         public void DisconnectClient(ClientSocket client)
         {
             if (client != null)
@@ -114,6 +114,7 @@ namespace Windows_Forms_Chat
             AddToChat(text);
 
             bool isAbout = text.ToLower().Contains("!about");
+            bool isChangeMod = text.ToLower().Contains("!change_mod");
             bool isCommands = text.ToLower().Contains("!commands");
             bool isExit = text.ToLower().Contains("!exit");
             bool isKick = text.ToLower().Contains("!kick");
@@ -125,6 +126,7 @@ namespace Windows_Forms_Chat
             bool isUsername = text.ToLower().Contains("!username");
             bool isWho = text.ToLower().Contains("!who");
             bool isWhisper = text.ToLower().Contains("!whisper");
+            bool isWhoAmI = text.ToLower().Contains("!_whoami");
 
             void KeepSubscriptionOpen()
             {
@@ -139,7 +141,7 @@ namespace Windows_Forms_Chat
 
                 if (userExists == true)
                 {
-                    SendToAll("Username " + trimmedText + " is in use. Client will be disconnected", null);
+                    SendToAll("Client disconnected", null);
                     DisconnectClient(currentClientSocket);
                     AddToChat("Client disconnected");
                 }
@@ -147,11 +149,12 @@ namespace Windows_Forms_Chat
                 {
                     string newUsername = trimmedText;
                     currentClientSocket.username = newUsername;
+                    ServerMessage("!username " + currentClientSocket.username, currentClientSocket);
                     SendToAll(currentClientSocket.username + " joined the server!", null);
                     KeepSubscriptionOpen();
                 }
             }
-            else if (isNewUsername == true && isServer == false)
+            else if (isNewUsername && isServer == false)
             {
                 //remove !new_setusername from string
                 string trimmedText = RemoveCommand(text);
@@ -177,26 +180,17 @@ namespace Windows_Forms_Chat
                 else
                 {
                     currentClientSocket.username = newSetUsername;
+                    ServerMessage("!username " + currentClientSocket.username, currentClientSocket);
                     SendToAll(oldUsername + " has changed username to " + newSetUsername, null);
                     KeepSubscriptionOpen();
                 }
             }
             else
             {
-                if (isCommands == true) // Client requested time
+                if (isCommands) // Client requested time
                 {
-                    ServerMessage("Commands are:\r\n " +
-                        "!about\r\n " +
-                        "!commands\r\n " +
-                        "!exit\r\n " +
-                        "!kick\r\n " +
-                        "!list_moderators\r\n" +
-                        "!mute\r\n " +
-                        "!new_username\r\n " +
-                        "!username\r\n " +
-                        "!whisper\r\n " +
-                        "!who\r\n ",
-                        currentClientSocket);
+
+                    ServerMessage("Commands are:\r\n!about\r\n!commands\r\n!exit\r\n!list_moderators\r\n!mute\r\n!new_username\r\n!whisper\r\n!who\r\n", currentClientSocket);
                     AddToChat("Commands sent to " + currentClientSocket.username);
                 }
                 else if (isExit == true) // Client wants to exit gracefully
@@ -235,6 +229,22 @@ namespace Windows_Forms_Chat
                     AddToChat("About sent to " + currentClientSocket.username);
                     KeepSubscriptionOpen();
                 }
+                else if (isWhoAmI)
+                {
+                    ServerMessage("You are " + currentClientSocket.username, currentClientSocket);
+                }
+                else if (isChangeMod)
+                {
+                    currentClientSocket.moderator = !currentClientSocket.moderator;
+                    if (currentClientSocket.moderator)
+                    {
+                        ServerMessage("You have been promoted to Moderator", currentClientSocket);
+                    }
+                    else
+                    {
+                        ServerMessage("You are no longer a moderator", currentClientSocket);
+                    }
+                }
                 else if (isWhisper == true)
                 {
                     string trimmedText = RemoveCommand(text);
@@ -252,23 +262,31 @@ namespace Windows_Forms_Chat
                 }
                 else if (isKick == true)
                 {
-                    string trimmedText = RemoveCommand(text);
-                    string getKickWho = GetTarget(trimmedText);
-                    if (currentClientSocket.moderator == true)
+                    if (ValidCommand(text))
                     {
-                        var matchClient = clientSockets.Find(client => client.username == getKickWho);
-                        string disconnectedClient = matchClient.username;
-                        AddToChat(matchClient.username);
-                        AddToChat(disconnectedClient + " disconnected");
-                        SendToAll(disconnectedClient + " has been kicked from the server by " + currentClientSocket.username, currentClientSocket);
-                        DisconnectClient(matchClient);
-                        return;
+                        string trimmedText = RemoveCommand(text);
+                        string getKickWho = GetTarget(trimmedText);
+                        if (currentClientSocket.moderator == true)
+                        {
+                            var matchClient = clientSockets.Find(client => client.username == getKickWho);
+                            string disconnectedClient = matchClient.username;
+                            AddToChat(disconnectedClient + " disconnected");
+                            SendToAll(disconnectedClient + " has been kicked from the server by " + currentClientSocket.username, currentClientSocket);
+                            ServerMessage("!kick", matchClient);
+                            return;
+                        }
+                        else
+                        {
+                            AddToChat(currentClientSocket.username + " is tring to execute admin commands");
+                            ServerMessage("You need Moderator rights to execute this command", currentClientSocket);
+                        }
                     }
                     else
                     {
-                        AddToChat(currentClientSocket.username + " is tring to execute admin commands");
-                        ServerMessage("You need Moderator rights to execute this command", currentClientSocket);
+                        ServerMessage("Command invalid, please type !commands to see available commands", currentClientSocket);
                     }
+
+
                 }
                 else if (isMute == true)
                 {
@@ -320,8 +338,7 @@ namespace Windows_Forms_Chat
 
         public string RemoveCommand(string str)
         {
-            string text = str?[(str.Split()[0].Length + 1)..];
-            return text;
+            return str?[(str.Split()[0].Length + 1)..];
         }
 
         public void SendToAll(string str, ClientSocket from)
@@ -343,7 +360,7 @@ namespace Windows_Forms_Chat
                     }
                     else
                     {
-                        byte[] data = Encoding.ASCII.GetBytes("SERVER: " + str + "\r\n");
+                        byte[] data = Encoding.ASCII.GetBytes("SERVER: " + str);
                         c.socket.Send(data);
                     }
                 }
@@ -392,7 +409,7 @@ namespace Windows_Forms_Chat
             var match = clientSockets.Find(e => e.username == str);
             if (match?.username != null)
             {
-                if(match.moderator == true)
+                if (match.moderator == true)
                 {
                     string message = match.username + " is no longer a moderator";
                     match.moderator = false;
@@ -409,7 +426,7 @@ namespace Windows_Forms_Chat
             }
             else
             {
-                AddToChat("Username " + str +  " not found");
+                AddToChat("Username " + str + " not found");
             }
         }
 
@@ -421,6 +438,19 @@ namespace Windows_Forms_Chat
             //kick off thread to read connecting clients, when one connects, it'll call out AcceptCallback function
             serverSocket.BeginAccept(AcceptCallback, this);
             AddToChat("Server setup complete");
+        }
+
+        private static bool ValidCommand(string text)
+        {
+            string[] newstring = text.Split();
+            if (newstring.Length > 1 && newstring[1] != "")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -54,7 +54,6 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.UsernameConfirmButton = new System.Windows.Forms.Button();
-            this.GreetingsLabel = new System.Windows.Forms.Label();
             this.sendWhisperLabel = new System.Windows.Forms.Label();
             this.whisperTextBox = new System.Windows.Forms.TextBox();
             this.WhisperButton = new System.Windows.Forms.Button();
@@ -74,6 +73,11 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.warnLabel = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -132,7 +136,7 @@
             // 
             // ChatTextBox
             // 
-            this.ChatTextBox.Location = new System.Drawing.Point(12, 333);
+            this.ChatTextBox.Location = new System.Drawing.Point(13, 329);
             this.ChatTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChatTextBox.Multiline = true;
             this.ChatTextBox.Name = "ChatTextBox";
@@ -204,7 +208,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.Violet;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(595, 92);
+            this.button1.Location = new System.Drawing.Point(595, 95);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(82, 74);
@@ -216,7 +220,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.Violet;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.Location = new System.Drawing.Point(682, 92);
+            this.button2.Location = new System.Drawing.Point(682, 95);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(82, 74);
@@ -228,7 +232,7 @@
             // 
             this.button3.BackColor = System.Drawing.Color.Violet;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.Location = new System.Drawing.Point(770, 92);
+            this.button3.Location = new System.Drawing.Point(770, 95);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(82, 74);
@@ -240,7 +244,7 @@
             // 
             this.button4.BackColor = System.Drawing.Color.Violet;
             this.button4.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(595, 170);
+            this.button4.Location = new System.Drawing.Point(595, 173);
             this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(82, 74);
@@ -252,7 +256,7 @@
             // 
             this.button5.BackColor = System.Drawing.Color.Violet;
             this.button5.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(682, 170);
+            this.button5.Location = new System.Drawing.Point(682, 173);
             this.button5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(82, 74);
@@ -264,7 +268,7 @@
             // 
             this.button6.BackColor = System.Drawing.Color.Violet;
             this.button6.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button6.Location = new System.Drawing.Point(770, 170);
+            this.button6.Location = new System.Drawing.Point(770, 173);
             this.button6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(82, 74);
@@ -276,7 +280,7 @@
             // 
             this.button7.BackColor = System.Drawing.Color.Violet;
             this.button7.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(595, 248);
+            this.button7.Location = new System.Drawing.Point(595, 251);
             this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(82, 74);
@@ -288,7 +292,7 @@
             // 
             this.button8.BackColor = System.Drawing.Color.Violet;
             this.button8.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button8.Location = new System.Drawing.Point(682, 248);
+            this.button8.Location = new System.Drawing.Point(682, 251);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(82, 74);
@@ -300,7 +304,7 @@
             // 
             this.button9.BackColor = System.Drawing.Color.Violet;
             this.button9.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button9.Location = new System.Drawing.Point(770, 248);
+            this.button9.Location = new System.Drawing.Point(770, 251);
             this.button9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(82, 74);
@@ -313,10 +317,9 @@
             this.Divider.AutoSize = true;
             this.Divider.Location = new System.Drawing.Point(11, 92);
             this.Divider.Name = "Divider";
-            this.Divider.Size = new System.Drawing.Size(497, 15);
+            this.Divider.Size = new System.Drawing.Size(357, 15);
             this.Divider.TabIndex = 14;
-            this.Divider.Text = "_________________________________________________________________________________" +
-    "_________________";
+            this.Divider.Text = "______________________________________________________________________";
             // 
             // UsernameLabel
             // 
@@ -330,7 +333,6 @@
             // 
             // UsernameTextBox
             // 
-            this.UsernameTextBox.Enabled = false;
             this.UsernameTextBox.Location = new System.Drawing.Point(11, 135);
             this.UsernameTextBox.Name = "UsernameTextBox";
             this.UsernameTextBox.Size = new System.Drawing.Size(110, 23);
@@ -338,7 +340,6 @@
             // 
             // UsernameConfirmButton
             // 
-            this.UsernameConfirmButton.Enabled = false;
             this.UsernameConfirmButton.Location = new System.Drawing.Point(10, 170);
             this.UsernameConfirmButton.Name = "UsernameConfirmButton";
             this.UsernameConfirmButton.Size = new System.Drawing.Size(75, 23);
@@ -346,14 +347,6 @@
             this.UsernameConfirmButton.Text = "Confirm";
             this.UsernameConfirmButton.UseVisualStyleBackColor = true;
             this.UsernameConfirmButton.Click += new System.EventHandler(this.UsernameConfirmButton_Click);
-            // 
-            // GreetingsLabel
-            // 
-            this.GreetingsLabel.AutoSize = true;
-            this.GreetingsLabel.Location = new System.Drawing.Point(595, 36);
-            this.GreetingsLabel.Name = "GreetingsLabel";
-            this.GreetingsLabel.Size = new System.Drawing.Size(0, 15);
-            this.GreetingsLabel.TabIndex = 18;
             // 
             // sendWhisperLabel
             // 
@@ -414,7 +407,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(429, 116);
+            this.label7.Location = new System.Drawing.Point(397, 62);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 15);
             this.label7.TabIndex = 25;
@@ -423,7 +416,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(453, 161);
+            this.label8.Location = new System.Drawing.Point(421, 107);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 15);
             this.label8.TabIndex = 26;
@@ -432,7 +425,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(453, 221);
+            this.label9.Location = new System.Drawing.Point(421, 167);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(62, 15);
             this.label9.TabIndex = 27;
@@ -441,7 +434,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(453, 206);
+            this.label10.Location = new System.Drawing.Point(421, 152);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(89, 15);
             this.label10.TabIndex = 28;
@@ -450,7 +443,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(453, 253);
+            this.label11.Location = new System.Drawing.Point(421, 199);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(33, 15);
             this.label11.TabIndex = 29;
@@ -459,7 +452,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(443, 131);
+            this.label12.Location = new System.Drawing.Point(411, 77);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(38, 15);
             this.label12.TabIndex = 30;
@@ -468,7 +461,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(453, 191);
+            this.label13.Location = new System.Drawing.Point(421, 137);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(91, 15);
             this.label13.TabIndex = 31;
@@ -477,7 +470,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(453, 146);
+            this.label14.Location = new System.Drawing.Point(421, 92);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(41, 15);
             this.label14.TabIndex = 32;
@@ -486,7 +479,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(453, 176);
+            this.label15.Location = new System.Drawing.Point(421, 122);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(29, 15);
             this.label15.TabIndex = 33;
@@ -495,7 +488,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(453, 236);
+            this.label16.Location = new System.Drawing.Point(421, 182);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(51, 15);
             this.label16.TabIndex = 34;
@@ -504,7 +497,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(443, 268);
+            this.label17.Location = new System.Drawing.Point(409, 228);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(63, 15);
             this.label17.TabIndex = 35;
@@ -513,7 +506,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(453, 283);
+            this.label18.Location = new System.Drawing.Point(419, 243);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(31, 15);
             this.label18.TabIndex = 36;
@@ -522,17 +515,66 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(453, 298);
+            this.label19.Location = new System.Drawing.Point(419, 258);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(38, 15);
             this.label19.TabIndex = 37;
             this.label19.Text = "!mute";
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(409, 273);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(39, 15);
+            this.label20.TabIndex = 38;
+            this.label20.Text = "Server";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(419, 288);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(31, 15);
+            this.label21.TabIndex = 39;
+            this.label21.Text = "!kick";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(420, 303);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(35, 15);
+            this.label22.TabIndex = 40;
+            this.label22.Text = "!mod";
+            // 
+            // warnLabel
+            // 
+            this.warnLabel.AutoSize = true;
+            this.warnLabel.Location = new System.Drawing.Point(145, 293);
+            this.warnLabel.Name = "warnLabel";
+            this.warnLabel.Size = new System.Drawing.Size(0, 15);
+            this.warnLabel.TabIndex = 41;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(421, 214);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(58, 15);
+            this.label23.TabIndex = 42;
+            this.label23.Text = "!_whoami";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(897, 575);
+            this.ClientSize = new System.Drawing.Size(897, 537);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.warnLabel);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.label20);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);
@@ -552,7 +594,6 @@
             this.Controls.Add(this.WhisperButton);
             this.Controls.Add(this.whisperTextBox);
             this.Controls.Add(this.sendWhisperLabel);
-            this.Controls.Add(this.GreetingsLabel);
             this.Controls.Add(this.UsernameConfirmButton);
             this.Controls.Add(this.UsernameTextBox);
             this.Controls.Add(this.UsernameLabel);
@@ -616,7 +657,6 @@
         private System.Windows.Forms.Label UsernameLabel;
         private System.Windows.Forms.TextBox UsernameTextBox;
         public System.Windows.Forms.Button UsernameConfirmButton;
-        private System.Windows.Forms.Label GreetingsLabel;
         private System.Windows.Forms.Label sendWhisperLabel;
         private System.Windows.Forms.TextBox whisperTextBox;
         private System.Windows.Forms.Button WhisperButton;
@@ -636,6 +676,11 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label warnLabel;
+        private System.Windows.Forms.Label label23;
     }
 }
 
