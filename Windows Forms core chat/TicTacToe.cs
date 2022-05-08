@@ -18,8 +18,8 @@ namespace Windows_Forms_Chat
     {
         //TODO change myTurn to false and playerTileType to blank for defaults
         //they should be dictated by the server
-        public bool myTurn = true;
-        public TileType playerTileType = TileType.cross;
+        public bool myTurn = false;
+        public TileType playerTileType = TileType.blank;
         public List<Button> buttons = new List<Button>();//assuming 9 in order
         public TileType[] grid = new TileType[9];
 

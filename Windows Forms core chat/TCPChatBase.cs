@@ -10,6 +10,13 @@ namespace Windows_Forms_Chat
     {
         public TextBox chatTextBox;
         public int port;
+
+        public TicTacToe ticTacToe;
+        public string playerOne = null;
+        public string playerTwo = null;
+        public bool playerOneTurn = false;
+        public bool playerTwoTurn = false;
+        public string winner = null;
         public void SetChat(string str)
         {
             chatTextBox.Invoke((Action)delegate

@@ -14,5 +14,7 @@ namespace Windows_Forms_Chat
         public string username = null;
         public bool moderator = false;
         public bool muted = false;
+        public bool isPlayerOne = false;
+        public bool isPlayerTwo = false;
     }
 }

@@ -44,6 +44,8 @@ namespace Windows_Forms_Chat
             return tcp;
         }
 
+
+
         public void ConnectToServer()
         {
             int attempts = 0;
@@ -75,7 +77,6 @@ namespace Windows_Forms_Chat
             socket.Send(buffer, 0, buffer.Length, SocketFlags.None);
         }
 
-
         public void ReceiveCallback(IAsyncResult AR)
         {
             ClientSocket currentClientSocket = (ClientSocket)AR.AsyncState;
@@ -106,13 +107,19 @@ namespace Windows_Forms_Chat
             bool isUsername = text.ToLower().Contains("!username");
             bool isKickServer = text.Contains("SERVER: !kick");
             bool isModServer = text.Contains("SERVER: !mod");
+            bool iAmPlayerOne = text.Contains("!player1");
+            bool iAmPlayerTwo = text.Contains("!player2");
+            bool isP1 = text.Contains("SERVER: !p1");
+            bool isP2 = text.Contains("SERVER: !p2");
+            bool isTurn = text.Contains("!turn");
+            bool isReset = text.Contains("SERVER: !reset");
 
-            if(isModServer || isKickServer || isKick || isUsername)
+            if (isModServer || isKickServer || isKick || isUsername || iAmPlayerOne || iAmPlayerTwo || isP1 || isP2 || isTurn || isReset)
             {
-                if (isKick == true)
+                if (isKick)
                 {
                     string trimmedText = RemoveCommand(text);
-                    if (currentClientSocket.moderator == true)
+                    if (currentClientSocket.moderator)
                     {
                         Close();
                         return;
@@ -131,13 +138,13 @@ namespace Windows_Forms_Chat
                     string removeCommand = RemoveCommand(text);
                     clientSocket.username = removeCommand;
                 }
-                else if (isModServer == true)
+                else if (isModServer)
                 {
                     if (ValidCommand(text))
                     {
                         if (GetTarget(text) == clientSocket.username)
                         {
-                            if (clientSocket.moderator == true)
+                            if (clientSocket.moderator)
                             {
                                 clientSocket.moderator = false;
                                 SendString("!change_mod");
@@ -157,6 +164,77 @@ namespace Windows_Forms_Chat
                     {
                         ServerMessage("Command invalid, please type !commands to see available commands", currentClientSocket);
                     }
+                }
+                else if (iAmPlayerOne)
+                {
+                    clientSocket.isPlayerOne = true;
+                    ticTacToe.playerTileType = TileType.cross;
+                    ticTacToe.myTurn = true;
+                    AddToChat("You are Player 1");
+                }
+                else if (iAmPlayerTwo)
+                {
+                    clientSocket.isPlayerTwo = true;
+                    ticTacToe.playerTileType = TileType.naught;
+                    ticTacToe.myTurn = true;
+                    AddToChat("You are Player 2");
+                }
+                else if (clientSocket.isPlayerOne && isP2)
+                {
+                    string removeServer = RemoveCommand(text);
+                    string getMove = RemoveCommand(removeServer);
+                    int move = Int32.Parse(getMove);
+                    AddToChat("move " + move);
+                    ticTacToe.playerTileType = TileType.naught;
+                    ticTacToe.SetTile(move, ticTacToe.playerTileType);
+                }
+                else if(clientSocket.isPlayerTwo && isP1)
+                {
+                    string removeServer = RemoveCommand(text);
+                    string getMove = RemoveCommand(removeServer);
+                    int move = Int32.Parse(getMove);
+                    AddToChat("move " + move);
+                    ticTacToe.playerTileType = TileType.cross;
+                    ticTacToe.SetTile(move, ticTacToe.playerTileType);
+                }
+                else if(isP1)
+                {
+                    string removeServer = RemoveCommand(text);
+                    string getMove = RemoveCommand(removeServer);
+                    int move = Int32.Parse(getMove);
+                    AddToChat("move " + move);
+                    ticTacToe.playerTileType = TileType.cross;
+                    ticTacToe.SetTile(move, ticTacToe.playerTileType);
+                }
+                else if(isP2)
+                {
+                    string removeServer = RemoveCommand(text);
+                    string getMove = RemoveCommand(removeServer);
+                    int move = Int32.Parse(getMove);
+                    AddToChat("move " + move);
+                    ticTacToe.playerTileType = TileType.naught;
+                    ticTacToe.SetTile(move, ticTacToe.playerTileType);
+                }
+                else if(isTurn)
+                {
+                    if(clientSocket.isPlayerOne)
+                    {
+                        ticTacToe.myTurn = true;
+                        AddToChat("Your turn...");
+                        ticTacToe.playerTileType = TileType.cross;
+                    }
+                    else
+                    {
+                        ticTacToe.myTurn = true;
+                        AddToChat("Your turn...");
+                        ticTacToe.playerTileType = TileType.naught;
+                    } 
+                }
+                else if(isReset)
+                {
+                    ticTacToe.ResetBoard();
+                    clientSocket.isPlayerOne = false;
+                    clientSocket.isPlayerTwo = false;
                 }
             }
             else
@@ -213,5 +291,4 @@ namespace Windows_Forms_Chat
             return target;
         }
     }
-
 }

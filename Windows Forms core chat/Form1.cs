@@ -34,6 +34,7 @@ namespace Windows_Forms_Chat
                 {
                     int port = int.Parse(MyPortTextBox.Text);
                     server = TCPChatServer.createInstance(port, ChatTextBox);
+                    server.ticTacToe = ticTacToe;
                     //oh no, errors
                     if (server == null)
                         throw new Exception("System: Incorrect port value!\n");//thrown exceptions should exit the try and land in next catch
@@ -66,6 +67,7 @@ namespace Windows_Forms_Chat
                         int port = int.Parse(MyPortTextBox.Text);
                         int serverPort = int.Parse(serverPortTextBox.Text);
                         client = TCPChatClient.CreateInstance(port, serverPort, ServerIPTextBox.Text, ChatTextBox);
+                        client.ticTacToe = ticTacToe;
 
                         if (client == null)
                             throw new Exception("System: Incorrect port value!\n");//thrown exceptions should exit the try and land in next catch
@@ -149,20 +151,22 @@ namespace Windows_Forms_Chat
                 bool validMove = ticTacToe.SetTile(i, ticTacToe.playerTileType);
                 if (validMove)
                 {
-                    //tell server about it
-                    //ticTacToe.myTurn = false;//call this too when ready with server
+                    client.SendString("!move " + i.ToString());
+                    ticTacToe.myTurn = false;
                 }
                 //example, do something similar from server
                 GameState gs = ticTacToe.GetGameState();
                 if (gs == GameState.crossWins)
                 {
                     ChatTextBox.AppendText("X wins!");
+                    client.SendString("!xwin");
                     ChatTextBox.AppendText(Environment.NewLine);
                     ticTacToe.ResetBoard();
                 }
                 if (gs == GameState.naughtWins)
                 {
-                    ChatTextBox.AppendText(") wins!");
+                    ChatTextBox.AppendText("O wins!");
+                    client.SendString("!owin");
                     ChatTextBox.AppendText(Environment.NewLine);
                     ticTacToe.ResetBoard();
                 }

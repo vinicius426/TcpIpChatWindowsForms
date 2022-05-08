@@ -6,11 +6,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 //https://github.com/AbleOpus/NetworkingSamples/blob/master/MultiServer/Program.cs
 namespace Windows_Forms_Chat
 {
-    public class TCPChatServer : TCPChatBase
+    public class TCPChatServer : TCPChatBase 
     {
         public Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         //connected clients
@@ -127,6 +128,10 @@ namespace Windows_Forms_Chat
             bool isWho = text.ToLower().Contains("!who");
             bool isWhisper = text.ToLower().Contains("!whisper");
             bool isWhoAmI = text.ToLower().Contains("!_whoami");
+            bool isJoin = text.ToLower().Contains("!join");
+            bool isMove = text.ToLower().Contains("!move");
+            bool isXWin = text.ToLower().Contains("!xwin");
+            bool isOWin = text.ToLower().Contains("!owin");
 
             void KeepSubscriptionOpen()
             {
@@ -318,6 +323,64 @@ namespace Windows_Forms_Chat
                         ServerMessage("You need Moderator rights to execute this command", currentClientSocket);
                     }
                 }
+                else if (isJoin)
+                {
+                    if (playerOne == null)
+                    {
+                        AddToChat(currentClientSocket.username + " is player 1");
+                        playerOne = currentClientSocket.username;
+                        ServerMessage("!player1", currentClientSocket);
+                    }
+                    else if (playerTwo == null)
+                    {
+                        AddToChat(currentClientSocket.username + " is player 2");
+                        playerTwo = currentClientSocket.username;
+                        ServerMessage("!player2", currentClientSocket);
+                    }
+                    else
+                    {
+                        AddToChat("game in progress");
+                    }
+                }
+                else if (isMove)
+                {
+                    if(currentClientSocket.username == playerOne)
+                    {
+                        var match = clientSockets.Find(socket => socket.username == playerTwo);
+
+                        ticTacToe.playerTileType = TileType.cross;
+                        string trimmed = RemoveCommand(text);
+                        int move = Int32.Parse(trimmed);
+                        SendToAll("!p1 " + move, null);
+                        ServerMessage("!turn", match);
+                    }
+                    else if(currentClientSocket.username == playerTwo)
+                    {
+                        var match = clientSockets.Find(socket => socket.username == playerOne);
+
+                        ticTacToe.playerTileType = TileType.cross;
+                        string trimmed = RemoveCommand(text);
+                        int move = Int32.Parse(trimmed);
+                        SendToAll("!p2 " + move, null);
+                        ServerMessage("!turn", match);
+                    }
+                }
+                else if (isXWin)
+                {
+                    SendToAll("=== Player 1 wins!!! ===\r\n", null);
+                    SendToAll("!reset",null);
+                    winner = playerOne;
+                    playerOne = null;
+                    playerTwo = null;
+                }
+                else if (isOWin)
+                {
+                    SendToAll("=== Player 2 wins!!! ===", null);
+                    SendToAll("!reset", null);
+                    winner = playerTwo;
+                    playerOne = null;
+                    playerTwo=null;
+                }
                 else if (isUsername == true && currentClientSocket.username != null)
                 {
                     ServerMessage("The command you are looking for is !new_username!", currentClientSocket);
@@ -350,7 +413,7 @@ namespace Windows_Forms_Chat
             }
             else
             {
-                AddToChat("...sent by " + from?.username);
+                /*AddToChat("...sent by " + from?.username);*/
                 foreach (ClientSocket c in clientSockets)
                 {
                     if (from?.socket != null && !from.socket.Equals(c) && from?.muted == false)
